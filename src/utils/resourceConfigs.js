@@ -106,6 +106,104 @@ export const resourceConfigs = {
             { key: 'vpc', label: 'VPC', type: 'text', placeholder: 'VPC name', required: true },
             { key: 'dns', label: 'DNS Servers', type: 'text', placeholder: 'Comma separated DNS servers', isArray: true }
         ]
+    },
+    'iptables-eips': {
+        displayName: 'Iptables External IP',
+        icon: '🌍',
+        fields: [
+            { key: 'v4ip', label: 'IPv4 Address', type: 'text', placeholder: 'e.g., 10.42.0.100' },
+            { key: 'v6ip', label: 'IPv6 Address', type: 'text', placeholder: 'IPv6 address' },
+            { key: 'externalSubnet', label: 'External Subnet', type: 'text', placeholder: 'External subnet name' },
+            { key: 'natGwDp', label: 'NAT Gateway', type: 'text', placeholder: 'NAT gateway datapath', required: true },
+            { key: 'macAddress', label: 'MAC Address', type: 'text', placeholder: 'e.g., aa:bb:cc:dd:ee:ff' },
+            { key: 'qosPolicy', label: 'QoS Policy', type: 'text', placeholder: 'QoS policy name' }
+        ]
+    },
+    'iptables-dnat-rules': {
+        displayName: 'Iptables DNAT Rule',
+        icon: '↗️',
+        fields: [
+            { key: 'eip', label: 'External IP', type: 'text', placeholder: 'EIP name (e.g., eipd01)', required: true },
+            { key: 'protocol', label: 'Protocol', type: 'select', options: ['tcp', 'udp', 'icmp'], required: true },
+            { key: 'externalPort', label: 'External Port', type: 'text', placeholder: 'e.g., 8080', required: true },
+            { key: 'internalIp', label: 'Internal IP', type: 'text', placeholder: 'e.g., 10.0.1.3', required: true },
+            { key: 'internalPort', label: 'Internal Port', type: 'text', placeholder: 'e.g., 80', required: true }
+        ]
+    },
+    'iptables-snat-rules': {
+        displayName: 'Iptables SNAT Rule',
+        icon: '↖️',
+        fields: [
+            { key: 'eip', label: 'External IP', type: 'text', placeholder: 'EIP name (e.g., eips01)', required: true },
+            { key: 'internalCIDR', label: 'Internal CIDR', type: 'text', placeholder: 'e.g., 10.0.1.0/24', required: true }
+        ]
+    },
+    'iptables-fip-rules': {
+        displayName: 'Iptables FIP Rule',
+        icon: '🌍',
+        fields: [
+            { key: 'eip', label: 'External IP', type: 'text', placeholder: 'EIP name (e.g., eipf01)', required: true },
+            { key: 'internalIp', label: 'Internal IP', type: 'text', placeholder: 'e.g., 10.0.1.3', required: true }
+        ]
+    },
+    'switch-lb-rules': {
+        displayName: 'Switch LB Rule',
+        icon: '⚖️',
+        fields: [
+            { key: 'vip', label: 'Virtual IP', type: 'text', placeholder: 'e.g., 10.0.1.100', required: true },
+            { key: 'namespace', label: 'Namespace', type: 'text', placeholder: 'Target namespace' },
+            { key: 'ports', label: 'Port Configurations', type: 'textarea', placeholder: 'JSON array of port configs', rows: 3 },
+            { key: 'endpoints', label: 'Endpoints', type: 'text', placeholder: 'Comma separated endpoints', isArray: true },
+            { key: 'selector', label: 'Selector', type: 'text', placeholder: 'Comma separated selectors', isArray: true },
+            { key: 'sessionAffinity', label: 'Session Affinity', type: 'select', options: ['', 'None', 'ClientIP'] }
+        ]
+    },
+    'ovn-eips': {
+        displayName: 'OVN External IP',
+        icon: '🗺️',
+        fields: [
+            { key: 'v4Ip', label: 'IPv4 Address', type: 'text', placeholder: 'e.g., 192.168.1.100' },
+            { key: 'v6Ip', label: 'IPv6 Address', type: 'text', placeholder: 'IPv6 address' },
+            { key: 'externalSubnet', label: 'External Subnet', type: 'text', placeholder: 'External subnet name' },
+            { key: 'macAddress', label: 'MAC Address', type: 'text', placeholder: 'e.g., aa:bb:cc:dd:ee:ff' },
+            { key: 'type', label: 'EIP Type', type: 'text', placeholder: 'EIP type' }
+        ]
+    },
+    'ovn-dnat-rules': {
+        displayName: 'OVN DNAT Rule',
+        icon: '📡',
+        fields: [
+            { key: 'ovnEip', label: 'OVN External IP', type: 'text', placeholder: 'OVN EIP name', required: true },
+            { key: 'protocol', label: 'Protocol', type: 'select', options: ['tcp', 'udp', 'icmp'], required: true },
+            { key: 'externalPort', label: 'External Port', type: 'text', placeholder: 'e.g., 8080', required: true },
+            { key: 'v4Ip', label: 'Target IPv4', type: 'text', placeholder: 'e.g., 10.0.1.3', required: true },
+            { key: 'internalPort', label: 'Internal Port', type: 'text', placeholder: 'e.g., 80', required: true },
+            { key: 'ipName', label: 'IP Name', type: 'text', placeholder: 'Target IP resource name' },
+            { key: 'ipType', label: 'IP Type', type: 'text', placeholder: 'IP resource type' },
+            { key: 'vpc', label: 'VPC', type: 'text', placeholder: 'VPC name' }
+        ]
+    },
+    'ovn-snat-rules': {
+        displayName: 'OVN SNAT Rule',
+        icon: '📶',
+        fields: [
+            { key: 'ovnEip', label: 'OVN External IP', type: 'text', placeholder: 'OVN EIP name', required: true },
+            { key: 'v4IpCidr', label: 'IPv4 CIDR', type: 'text', placeholder: 'e.g., 10.0.1.0/24', required: true },
+            { key: 'vpc', label: 'VPC', type: 'text', placeholder: 'VPC name' },
+            { key: 'vpcSubnet', label: 'VPC Subnet', type: 'text', placeholder: 'VPC subnet name' },
+            { key: 'ipName', label: 'IP Name', type: 'text', placeholder: 'IP resource name' }
+        ]
+    },
+    'ovn-fips': {
+        displayName: 'OVN Floating IP',
+        icon: '🌐',
+        fields: [
+            { key: 'ovnEip', label: 'OVN External IP', type: 'text', placeholder: 'OVN EIP name', required: true },
+            { key: 'v4Ip', label: 'Internal IPv4', type: 'text', placeholder: 'e.g., 10.0.1.3', required: true },
+            { key: 'vpc', label: 'VPC', type: 'text', placeholder: 'VPC name' },
+            { key: 'ipName', label: 'IP Name', type: 'text', placeholder: 'Target IP resource name' },
+            { key: 'ipType', label: 'IP Type', type: 'text', placeholder: 'IP resource type' }
+        ]
     }
 };
 
