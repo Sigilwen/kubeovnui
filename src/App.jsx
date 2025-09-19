@@ -7,6 +7,7 @@ import ResourceListView from './components/ResourceListView';
 import GenericEditModal from './components/GenericEditModal';
 import GenericCreateModal from './components/GenericCreateModal';
 import ConfirmDeleteModal from './components/ConfirmDeleteModal';
+import { API_BASE_URL } from './config/api';
 
 function App() {
   const [currentView, setCurrentView] = useState('topology');
@@ -43,7 +44,7 @@ function App() {
 
   // Handle save (PATCH)
   const handleSave = async (objectData, updatedSpecs) => {
-    const endpoint = `http://localhost:8000/api/${editingResourceType}/${objectData.metadata.name}`;
+    const endpoint = `${API_BASE_URL}/${editingResourceType}/${objectData.metadata.name}`;
     
     const response = await fetch(endpoint, {
       method: 'PATCH',
@@ -60,7 +61,7 @@ function App() {
 
   // Handle create (POST)
   const handleCreateResource = async (formData) => {
-    const endpoint = `http://localhost:8000/api/${creatingResourceType}`;
+    const endpoint = `${API_BASE_URL}/${creatingResourceType}`;
     
     const createBody = {
       name: formData.name,
@@ -89,7 +90,7 @@ function App() {
     setIsDeleting(true);
     
     try {
-      const endpoint = `http://localhost:8000/api/${editingResourceType}/${editingObject.metadata.name}`;
+      const endpoint = `${API_BASE_URL}/${editingResourceType}/${editingObject.metadata.name}`;
       
       const response = await fetch(endpoint, {
         method: 'DELETE'

@@ -5,6 +5,7 @@ import { Card, Row, Col, Spinner } from "react-bootstrap";
 import TextUpdaterNode from './TextUpdaterNode';
 import EditObjectModal from './components/EditObjectModal';
 import ConfirmDeleteModal from './components/ConfirmDeleteModal';
+import { API_BASE_URL } from './config/api';
 
 const nodeTypes = { textUpdater: TextUpdaterNode };
 
@@ -149,9 +150,9 @@ const NetworkTopology = () => {
     const fetchTopologyData = async () => {
         try {
             const [vpcsRes, subnetsRes, routersRes] = await Promise.all([
-                fetch("http://localhost:8000/api/vpcs"),
-                fetch("http://localhost:8000/api/subnets"),
-                fetch("http://localhost:8000/api/vpc-nat-gateways"),
+                fetch(`${API_BASE_URL}/vpcs`),
+                fetch(`${API_BASE_URL}/subnets`),
+                fetch(`${API_BASE_URL}/vpc-nat-gateways`),
             ]);
 
             const [vpcsData, subnetsData, routersData] = await Promise.all([
@@ -181,8 +182,8 @@ const NetworkTopology = () => {
     // API patch function
     const handleSaveObject = async (objectData, updatedSpecs) => {
         const endpoint = editingObjectType === 'subnet' 
-            ? `http://localhost:8000/api/subnets/${objectData.metadata.name}` 
-            : `http://localhost:8000/api/vpc-nat-gateways/${objectData.metadata.name}`;
+            ? `${API_BASE_URL}/subnets/${objectData.metadata.name}` 
+            : `${API_BASE_URL}/vpc-nat-gateways/${objectData.metadata.name}`;
         
         const patchData = {
             spec: updatedSpecs
@@ -218,8 +219,8 @@ const NetworkTopology = () => {
         
         try {
             const endpoint = deletingObjectType === 'subnet' 
-                ? `http://localhost:8000/api/subnets/${deletingObject.metadata.name}` 
-                : `http://localhost:8000/api/vpc-nat-gateways/${deletingObject.metadata.name}`;
+                ? `${API_BASE_URL}/subnets/${deletingObject.metadata.name}` 
+                : `${API_BASE_URL}/vpc-nat-gateways/${deletingObject.metadata.name}`;
             
             const response = await fetch(endpoint, {
                 method: 'DELETE'

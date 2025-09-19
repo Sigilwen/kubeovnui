@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Card, Spinner, Alert, Badge, Form, InputGroup } from 'react-bootstrap';
 import { resourceConfigs, getDisplayColumns, getCellValue } from '../utils/resourceConfigs';
+import { API_BASE_URL } from '../config/api';
 
 const ResourceListView = ({ resourceType, onEdit, onDelete, onCreate }) => {
     const [resources, setResources] = useState([]);
@@ -21,7 +22,7 @@ const ResourceListView = ({ resourceType, onEdit, onDelete, onCreate }) => {
         setError(null);
         
         try {
-            const response = await fetch(`http://localhost:8000/api/${resourceType}`);
+            const response = await fetch(`${API_BASE_URL}/${resourceType}`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch ${resourceType}: ${response.statusText}`);
             }
