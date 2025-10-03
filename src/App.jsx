@@ -2,6 +2,7 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import NetworkTopology from "./NetworkTopology";
+import VpcDetailView from './components/VpcDetailView';
 import Navigation from './components/Navigation';
 import ResourceListView from './components/ResourceListView';
 import GenericEditModal from './components/GenericEditModal';
@@ -11,6 +12,7 @@ import { API_BASE_URL } from './config/api';
 
 function App() {
   const [currentView, setCurrentView] = useState('topology');
+  const [selectedVpc, setSelectedVpc] = useState(null);
   
   // Modal state for resource management
   const [showEditModal, setShowEditModal] = useState(false);
@@ -114,9 +116,27 @@ function App() {
     }
   };
 
+  // Handle VPC detail navigation
+  const handleVpcDetail = (vpcName) => {
+    setSelectedVpc(vpcName);
+    setCurrentView('vpc-detail');
+  };
+
+  const handleBackToTopology = () => {
+    setSelectedVpc(null);
+    setCurrentView('topology');
+  };
+
   const renderCurrentView = () => {
     if (currentView === 'topology') {
-      return <NetworkTopology />;
+      return <NetworkTopology onVpcClick={handleVpcDetail} />;
+    } else if (currentView === 'vpc-detail' && selectedVpc) {
+      return (
+        <VpcDetailView 
+          vpcName={selectedVpc}
+          onBack={handleBackToTopology}
+        />
+      );
     } else {
       return (
         <div className="container-fluid mt-4">

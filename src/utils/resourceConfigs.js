@@ -199,10 +199,22 @@ export const resourceConfigs = {
         icon: '🌐',
         fields: [
             { key: 'ovnEip', label: 'OVN External IP', type: 'text', placeholder: 'OVN EIP name', required: true },
-            { key: 'v4Ip', label: 'Internal IPv4', type: 'text', placeholder: 'e.g., 10.0.1.3', required: true },
+            { key: 'v4Ip', label: 'Internal IPv4', type: 'text', placeholder: 'e.g., ********', required: true },
             { key: 'vpc', label: 'VPC', type: 'text', placeholder: 'VPC name' },
             { key: 'ipName', label: 'IP Name', type: 'text', placeholder: 'Target IP resource name' },
             { key: 'ipType', label: 'IP Type', type: 'text', placeholder: 'IP resource type' }
+        ]
+    },
+    pods: {
+        displayName: 'Pod',
+        icon: '📦',
+        fields: [
+            { key: 'namespace', label: 'Namespace', type: 'text', placeholder: 'Pod namespace', required: true },
+            { key: 'subnet', label: 'Subnet', type: 'text', placeholder: 'Attached subnet name' },
+            { key: 'ipAddress', label: 'IP Address', type: 'text', placeholder: 'e.g., 10.0.0.100' },
+            { key: 'macAddress', label: 'MAC Address', type: 'text', placeholder: 'e.g., 00:16:3e:xx:xx:xx' },
+            { key: 'status', label: 'Status', type: 'text', placeholder: 'Pod status' },
+            { key: 'node', label: 'Node', type: 'text', placeholder: 'Kubernetes node name' }
         ]
     }
 };
