@@ -1,0 +1,212 @@
+---
+# Namespace for the application
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ovnui
+---
+# Service Account for the API with proper permissions
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubeovnapi
+  namespace: ovnui
+---
+# ClusterRole with permissions for all Kube-OVN resources
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubeovnapi-role
+rules:
+  - apiGroups: ["kubeovn.io"]
+    resources:
+      - vpcs
+      - subnets
+      - ippools
+      - ips
+      - iptables-dnat-rules
+      - iptables-eips
+      - iptables-fip-rules
+      - iptables-snat-rules
+      - ovn-dnat-rules
+      - ovn-eips
+      - ovn-fips
+      - ovn-snat-rules
+      - provider-networks
+      - qos-policies
+      - security-groups
+      - switch-lb-rules
+      - vips
+      - vlans
+      - vpc-dnses
+      - vpc-nat-gateways
+    verbs: ["get", "list", "create", "update", "patch", "delete"]
+---
+# ClusterRoleBinding to bind the service account to the role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubeovnapi-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubeovnapi-role
+subjects:
+  - kind: ServiceAccount
+    name: kubeovnapi
+    namespace: ovnui
+---
+# API Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubeovnapi
+  namespace: ovnui
+  labels:
+    app: kubeovnapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kubeovnapi
+  template:
+    metadata:
+      labels:
+        name: kubeovnapi
+    spec:
+      serviceAccountName: kubeovnapi # Use the service account with proper permissions
+      containers:
+        - name: ovn-api
+          image: sigilwen/kubeovnapi:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+              name: uvicorn
+              protocol: TCP
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+# API Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubeovnapi-svc
+  namespace: ovnui
+  labels:
+    app: kubeovnapi
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+      protocol: TCP
+  selector:
+    name: kubeovnapi
+---
+# UI Deployment with nginx proxy configuration
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubeovnui
+  namespace: ovnui
+  labels:
+    app: kubeovnui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kubeovnui
+  template:
+    metadata:
+      labels:
+        name: kubeovnui
+    spec:
+      containers:
+        - name: ovn-ui
+          image: sigilwen/kubeovnui:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+# UI Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ovnui-svc
+  namespace: ovnui
+  labels:
+    app: ovnui-gui
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    name: kubeovnui
+---
+# Ingress configuration
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ovnui-ingress
+  namespace: ovnui
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - <put your DNS here >
+      secretName: ovnui-tls
+  rules:
+    - host: <put your DNS here >
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ovnui-svc
+                port:
+                  name: http

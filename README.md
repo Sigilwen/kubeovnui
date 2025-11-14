@@ -4,6 +4,11 @@
 
 This is a **Kube-OVN network management UI** built with React/Vite that provides both visual topology views and CRUD management for Kubernetes network resources. The application operates as a frontend client that communicates with a backend API server at `http://localhost:8000/api/`.
 
+## Kubernetes deployment
+
+Deploy this application on your Kubernetes cluster configured with [OVN CNI](<https://ovn-kubernetes.io/>). You must have Cert-manager installed with a Cluster issuer named *letsencrypt-staging*. You should adapt this for production.
+An example kubernetes deployment *ovnui.yml* is available in kubernetes folder.
+
 ### Key Architectural Patterns
 
 **Centralized Modal System**: The app uses a sophisticated modal architecture where `App.jsx` manages all modal state (edit, create, delete) and passes handlers down to child components. This prevents modal conflicts and provides consistent UX.
