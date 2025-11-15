@@ -47,6 +47,7 @@ npm run lint
 ### Backend Integration
 
 The frontend expects a REST API server running on `http://localhost:8000/api/` with endpoints for all Kube-OVN resource types (subnets, vpcs, vpc-nat-gateways, ips, etc.).
+The kubernetes deployment uses API published on my [repo](<https://github.com/Sigilwen/kubeovnapi>)
 
 ### Docker Development
 
