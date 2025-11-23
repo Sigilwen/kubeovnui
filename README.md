@@ -1,5 +1,17 @@
 # README.md
 
+## Description
+
+Modern web GUI for managing Kube-OVN resources with topology visualisation
+
+## Screenshots
+
+![VPC Topology](/assets/VPC_topology.jpg)
+![VPC Topology with NAT GW](/assets/VPC_topology_NATGW.jpg)
+![Create VPC](/assets/New_VPC.jpg)
+![List IP addresses](/assets/IP_list.jpg)
+![DNAT Rule](/assets/DNAT.jpg)
+
 ## Core Architecture
 
 This is a **Kube-OVN network management UI** built with React/Vite that provides both visual topology views and CRUD management for Kubernetes network resources. The application operates as a frontend client that communicates with a backend API server at `http://localhost:8000/api/`.
@@ -8,6 +20,11 @@ This is a **Kube-OVN network management UI** built with React/Vite that provides
 
 Deploy this application on your Kubernetes cluster configured with [OVN CNI](<https://ovn-kubernetes.io/>). You must have Cert-manager installed with a Cluster issuer named *letsencrypt-staging*. You should adapt this for production.
 An example kubernetes deployment *ovnui.yml* is available in kubernetes folder.
+
+```bash
+# Deploy OVN API & OVN UI on K8S
+kubectl apply -f kubernetes/ovnui.yaml
+```
 
 ### Key Architectural Patterns
 
@@ -58,6 +75,10 @@ docker build -t kube-ovn-ui .
 # Run containerized version (nginx serving static build)
 docker run -p 8080:80 kube-ovn-ui
 ```
+
+## Star the Project ⭐
+
+If you like OVNUI, please consider giving it a star on GitHub to show your support and help others discover the project.
 
 ## Resource Management System
 
