@@ -6,11 +6,11 @@ Modern web GUI for managing Kube-OVN resources with topology visualisation
 
 ## Screenshots
 
-![VPC Topology](/assets/VPC_topology.jpg)
-![VPC Topology with NAT GW](/assets/VPC_topology_NATGW.jpg)
-![Create VPC](/assets/New_VPC.jpg)
-![List IP addresses](/assets/IP_list.jpg)
-![DNAT Rule](/assets/DNAT.jpg)
+![VPC Topology](/assets/VPC_topology.jpg "VPV topology view")
+![VPC Topology with NAT GW](/assets/VPC_topology_NATGW.jpg "VPC topology view with NAT Gateway")
+![Create VPC](/assets/New_VPC.jpg "Create a VPC")
+![List IP addresses](/assets/IP_list.jpg "List IP adressess")
+![DNAT Rule](/assets/DNAT.jpg "DNAT rule")
 
 ## Core Architecture
 
