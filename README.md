@@ -80,6 +80,16 @@ docker run -p 8080:80 kube-ovn-ui
 
 If you like OVNUI, please consider giving it a star on GitHub to show your support and help others discover the project.
 
+## Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
 ## Resource Management System
 
 ### Adding New Resource Types
